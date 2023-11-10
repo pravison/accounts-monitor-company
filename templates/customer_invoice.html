@@ -1,0 +1,84 @@
+{% extends 'main.html' %}
+{% load static %}
+{% block title%} Sales Dashboard{%endblock title%}
+
+{%block content %}
+<main>
+    <!-- ======= Contact Section ======= -->
+    <section class="contact">
+
+        <div class="container"  data-aos="fade-up">
+  
+          <div class="row gy-4">
+
+            <div class="col-lg-12 mt-5" style="align-items: center;">
+              {% if messages %}
+                  {% for message in messages %}
+
+                  <div class="alert alert-primary alert-dismissible fade show" role="alert">
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    <strong>
+                      {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+                          Error : {{ message }}
+                      {% elif message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+                          Success : {{ message }}
+                      {% else %}
+                          {{ message.tags | title }}
+                      {% endif %}
+                      {{ message. }}
+                  </strong>
+                  </div>
+                      
+                  {% endfor %}
+              {% endif %}
+              <div class="container" data-aos="fade-up">
+
+                <div class="row gy-4">
+                  <div class="col-lg-12 col-md-12">
+                    <div class="count-box">
+                      <i class="bi bi-emoji-smile"></i> Hi {{username}}
+                    </div>
+                  </div>
+                </div>
+              </div>
+    
+                <h5 class="card-title">Invoices Lists</h5>
+                <!-- Table with stripped rows -->
+                {% if invoices %}
+                <table class="table datatable table-sm">
+                  <thead>
+                    <tr>
+                      <th scope="col">Created</th>
+                      <th scope="col">Amount</th>
+                      <th scope="col">Pending</th>
+                      <th scope="col">Paid</th>
+                      <th scope="col">Expired</th>
+                      <th  scope="col">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for invoice in invoices %}
+                    <tr>
+                      <td>{{invoice.created_on}}</td>
+                      <td>{{invoice.amount}}</td>
+                      <td>{{invoice.pending}}</td>
+                      <td>{{invoice.paid}}</td>
+                      <td>{{invoice.expired}}</td>
+                      <td><a href={%url 'edit_invoice' invoice.id %}>view</a></td>
+                    </tr>
+                    {%endfor%}
+                  </tbody>
+                </table>
+                {%else%}
+                <div><h6>You don't have any invoices </h6></div>
+                {%endif%}
+  
+            </div>
+  
+          </div>
+  
+        </div>
+  
+      </section><!-- End Contact Section -->
+</main>
+{% endblock %}

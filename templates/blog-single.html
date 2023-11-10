@@ -1,0 +1,192 @@
+{% extends 'main.html' %}
+{% load static %}
+{% block title%} Blog Single{%endblock title%}
+{% block content %}
+
+  <main id="main">
+
+    <!-- ======= Breadcrumbs ======= -->
+    <section class="breadcrumbs">
+      <div class="container mt-2">
+
+        <ol>
+          <li><a href="{% url 'homepage' %}">Home</a></li>
+          <li><a href="{% url 'blog' %}">Blog</a></li>
+          <li>Blog Single</li>
+        </ol>
+        <h2>Blog Single</h2>
+
+      </div>
+    </section><!-- End Breadcrumbs -->
+
+    <!-- ======= Blog Single Section ======= -->
+    <section id="blog" class="blog">
+      <div class="container" data-aos="fade-up">
+
+        <div class="row">
+          {% if messages %}
+            {% for message in messages %}
+
+            <div class="alert alert-primary alert-dismissible fade show" role="alert">
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+              <strong>
+                {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+                    Error : {{ message }}
+                {% elif message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+                    Success : {{ message }}
+                {% else %}
+                    {{ message.tags | title }}
+                {% endif %}
+                {{ message. }}
+            </strong>
+            </div>
+                
+            {% endfor %}
+        {% endif %}
+
+          <div class="col-lg-8 entries">
+
+            <article class="entry entry-single">
+
+              <div class="entry-img">
+                <img src="{{blog.imageURL}}" alt="" class="img-fluid">
+              </div>
+
+              <h2 class="entry-title">
+                {{blog.title}}
+              </h2>
+
+              <div class="entry-meta">
+                <ul>
+                  <li class="d-flex align-items-center"><i class="bi bi-person"></i> {{blog.author}}</li>
+                  <li class="d-flex align-items-center"><i class="bi bi-clock"></i><time datetime="2020-01-01">{{ blog.dateUpdated}}</time></li>
+                  <li class="d-flex align-items-center"><i class="bi bi-chat-dots"></i> <a class="nav-link scrollto" href="{%url 'blog' %}#comment">{{blog.comment_set.count}} Comments</a></li>
+                </ul>
+              </div>
+
+              <div class="entry-content">
+                {{blog.content}}
+
+              </div>
+
+              <div class="entry-footer">
+                <i class="bi bi-folder"></i>
+                <ul class="cats">
+                  
+                  <li><a href="{% url 'search' %}?query={{ query }}&category={{blog.categories.id}}" title="category">{{blog.categories.name}}</a></li>
+                  
+                </ul>
+
+                <i class="bi bi-tags"></i>
+                <ul class="tags">
+                  {%for tag in tags %}
+                  <li><a href="{% url 'search' %}?query={{ query }}&tag={{tag.id}}"  title="tag">{{tag.name}}</a></li>
+                  {%endfor%}
+                  
+                </ul>
+              </div>
+
+            </article><!-- End blog entry -->
+
+            <!-- <div class="blog-author d-flex align-items-center">
+              <img src="assets/img/blog/blog-author.jpg" class="rounded-circle float-left" alt="">
+              <div>
+                <h4>Jane Smith</h4>
+                <div class="social-links">
+                  <a href="https://twitters.com/#"><i class="bi bi-twitter"></i></a>
+                  <a href="https://facebook.com/#"><i class="bi bi-facebook"></i></a>
+                  <a href="https://instagram.com/#"><i class="biu bi-instagram"></i></a>
+                </div>
+                <p>
+                  Itaque quidem optio quia voluptatibus dolorem dolor. Modi eum sed possimus accusantium. Quas repellat voluptatem officia numquam sint aspernatur voluptas. Esse et accusantium ut unde voluptas.
+                </p>
+              </div>
+            </div>End blog author bio -->
+
+            <div class="blog-comments" id="comment">
+
+              <h4 class="comments-count">{{blog.comment_set.count}} Comments</h4>
+
+              {% for comment in comments %}
+
+              <div id="comment-2" class="comment">
+                <div class="d-flex">
+                  <div>
+                    <h5>{{comment.name}} <a class="scrollto reply" href="{%url 'blog' %}#replys" ><i class="bi bi-reply-fill"></i>Reply</a></h5>
+                    <time datetime="2020-01-01">{{comment.date}}</time>
+                    <p>{{comment.message}}</p>
+                  </div>
+                </div>
+
+              </div><!-- End comment #2-->
+              {%endfor%}
+
+              <div class="reply-form" id="replys">
+                <h4>Leave a Comment</h4>
+                <p>Your email address will not be published. Required fields are marked * </p>
+                <form method="POST" class=""  id="comment" action="{% url 'comment' %}">
+                  {% csrf_token %}
+                  <div class="row">
+                    <div class="visually-hidden">
+                      <label for="blog" class="form-label visually-hidden"> blog </label>
+                          <select class="form-select" id="floatingSelect" name='blog'aria-label="State">
+                              <option value="{{blog.id}}">blog id</option>
+                          </select>
+                    </div>
+                    <div class="col-md-6 form-group">
+                      <input name="name" type="text" class="form-control" placeholder="Your Name*" required>
+                    </div>
+                    <div class="col-md-6 form-group">
+                      <input name="email" type="text" class="form-control" placeholder="Your Email*" required>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col form-group">
+                      <input name="website" type="text" class="form-control" placeholder="Your Website">
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col form-group">
+                      <textarea name="comment" class="form-control" placeholder="Your Comment*" required></textarea>
+                    </div>
+                  </div>
+                  <button type="submit" class="btn justify-content-center btn-primary">Post Comment</button>
+
+                </form>
+                
+
+              </div>
+
+            </div><!-- End blog comments -->
+
+          </div><!-- End blog entries list -->
+
+          <div class="col-lg-4">
+
+            <div class="sidebar">
+
+              <h3 class="sidebar-title">Related Posts</h3>
+              <div class="sidebar-item recent-posts">
+                {% for blog in blogs %}
+                <div class="post-item clearfix">
+                  <img src="{{blog.imageURL}}" alt="">
+                  <h4><a href="{% url 'blog_single' blog.id %}">{{blog.title}}</a></h4>
+                  <time datetime="2020-01-01">{{ blog.dateUpdated }}</time>
+                </div>
+                {%endfor%}
+
+              </div><!-- End sidebar recent posts-->
+
+            </div><!-- End sidebar -->
+
+          </div><!-- End blog sidebar -->
+
+        </div>
+
+      </div>
+    </section><!-- End Blog Single Section -->
+
+  </main><!-- End #main -->
+  
+
+ {% endblock %}

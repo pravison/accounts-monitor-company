@@ -1,0 +1,100 @@
+{% extends 'main.html' %}
+{% load static %}
+{% block title%} Sales Dashboard{%endblock title%}
+
+{%block content %}
+<main>
+    <!-- ======= Contact Section ======= -->
+    <section class="contact">
+
+        <div class="container"  data-aos="fade-up">
+  
+          <div class="row gy-4">
+
+            <div class="col-lg-12 mt-5" style="align-items: center;">
+              {% if messages %}
+                  {% for message in messages %}
+
+                  <div class="alert alert-primary alert-dismissible fade show" role="alert">
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    <strong>
+                      {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+                          Error : {{ message }}
+                      {% elif message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+                          Success : {{ message }}
+                      {% else %}
+                          {{ message.tags | title }}
+                      {% endif %}
+                      {{ message. }}
+                  </strong>
+                  </div>
+                      
+                  {% endfor %}
+              {% endif %}
+              <div class="container" data-aos="fade-up">
+
+                <div class="row gy-4">
+                  <div class="col-lg-12 col-md-12">
+                    <div class="count-box">
+                      <i class="bi bi-emoji-smile"></i> Hi {{sales_rep.name}}
+                      <div>
+                        <h5>use this  <strong>{{sales_rep.refferal_code}} as a refferal code</strong> every time you onboard a customer</h5>
+                        <h5>You are entitled to <strong>30% of Total Monthly Subscription</strong> of all the clients you onBoard</h5>
+                        <h5>You Will receive your Monthly Cut for the rest of Customers lifetime with our service  </h5>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+    
+                <h5 class="card-title">Customers Lists</h5>
+                <!-- Table with stripped rows -->
+                {% if customers %}
+                <table class="table datatable table-sm">
+                  <thead>
+                    <tr>
+                      <th scope="col">Created</th>
+                      <th scope="col">Customer</th>
+                      <th scope="col">Code</th>
+                      <th scope="col">subscription</th>
+                      <th scope="col">Commission</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for customer in customers %}
+                    <tr>
+                      <td>{{customer.created_on}}</td>
+                      <td>{{customer.business_name}}</td>
+                      <td>{{customer.refferal_code}}</td>
+                      <td>1500</td>
+                      <td>30%</td>
+                    </tr>
+                    {%endfor%}
+                  </tbody>
+                </table>
+                {%else%}
+                <table class="table datatable table-sm">
+                  <thead>
+                    <tr>
+                      <th scope="col">Created</th>
+                      <th scope="col">Customer</th>
+                      <th scope="col">Code</th>
+                      <th scope="col">subscription</th>
+                      <th scope="col">Commission</th>
+                    </tr>
+                  </thead>
+                  <tbody></tbody>
+                  <h6>You haven't onborded any customer</h6>
+                  </tbody>
+                </table>
+                {%endif%}
+  
+            </div>
+  
+          </div>
+  
+        </div>
+  
+      </section><!-- End Contact Section -->
+</main>
+{% endblock %}
